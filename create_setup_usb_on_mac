@@ -1,0 +1,13 @@
+# convert .iso image into .dmg format
+hdiutil convert -format UDRW -o ubuntu_converted_image.dmg ubuntu.iso
+
+# find the name of usb(for instance, /dev/disk2)
+diskutil list
+
+# unmount usb storage and burn image into it
+diskutil unmountDisk /dev/disk2
+sudo dd if=ubuntu_converted_image.dmg of=/dev/disk2 bs=1m
+diskutil eject /dev/disk2
+
+# it seems that, mac and win support FAT32 and exFAT file system. But old version of win doesn't support exFAT, and FAT32 file system doesn't support single file which is larger than 4GB
+# Mac support HFS, but the support for NTFS is not very stable. `NTFS for Mac` is a software trying to solve this problem, but it's expensive.
